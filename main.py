@@ -11,6 +11,7 @@ tree = app_commands.CommandTree(client)
 load_dotenv()
 connect = cursor = db = None
 
+
 @client.event
 async def on_message(message):
     if message.author == client.user:
@@ -19,9 +20,12 @@ async def on_message(message):
     if message.content.startswith('$hello'):
         await message.channel.send('Hello!')
 
-@tree.command(name = "commandname", description = "My first application Command") #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
-async def first_command(interaction):
-    await interaction.response.send_message("Hello!")
+
+
+guildId = [788080898704015391]
+@tree.command(name = "commandname", description = "My first application Command", guild=discord.Object(id = 788080898704015391))
+async def first_command(interaction, member: discord.Member, amount: int = 1):
+    await interaction.response.send_message("Hello!" + str(amount))
 
 @client.event
 async def on_ready():
@@ -29,3 +33,4 @@ async def on_ready():
     print(f'We have logged in as {client.user}')
 
 client.run(os.environ.get('DISCORD_CONNECT'))
+
